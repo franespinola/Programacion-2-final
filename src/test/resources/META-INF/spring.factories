@@ -1,0 +1,2 @@
+org.springframework.test.context.ContextCustomizerFactory = fran.um.edu.ar.\
+    config.SqlTestContainersSpringContextCustomizerFactory
