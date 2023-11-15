@@ -1,10 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="es" dir="ltr">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Programacion2final</title>
-    <meta name="description" content="Description for Programacion2final" />
+    <title>programacion2Final</title>
+    <meta name="description" content="Description for programacion2Final" />
     <meta name="google" content="notranslate" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="theme-color" content="#000000" />
@@ -109,7 +109,7 @@
       };
       function showError() {
         var errorElm = document.getElementById('jhipster-error');
-        if (errorElm?.style) {
+        if (errorElm && errorElm.style) {
           errorElm.style.display = 'block';
         }
       }
@@ -126,13 +126,14 @@
       }
     </script>
     -->
-    <!-- Google Analytics: uncomment and change both instances of UA-XXXXX-X to be your site's ID.
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-X"></script>
+    <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-XXXXX-X');
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>-->
   </body>
 </html>

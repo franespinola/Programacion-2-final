@@ -15,7 +15,7 @@ Developement Ribbon
   transform: rotate(-45deg);
   overflow: hidden;
   position: absolute;
-  top: 40px;
+  top: 30px;
   white-space: nowrap;
   width: 15em;
   z-index: 99999;
@@ -85,7 +85,7 @@ Navbar styles
 }
 
 .navbar-version {
-  font-size: 0.65em;
+  font-size: 10px;
   color: $header-color-secondary;
   padding: 0 0 0 10px;
 }
@@ -99,14 +99,13 @@ Navbar styles
     width: auto;
     display: inline-block;
     img {
-      width: 45px;
+      height: 45px;
     }
   }
 }
 
 .brand-title {
-  font-size: 1.25rem;
-  margin-left: 0.25rem;
+  font-size: 24px;
   color: $header-color;
   &:hover {
     color: $header-color-hover;

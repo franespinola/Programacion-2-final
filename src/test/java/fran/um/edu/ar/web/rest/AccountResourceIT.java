@@ -1,5 +1,6 @@
 package fran.um.edu.ar.web.rest;
 
+import static fran.um.edu.ar.web.rest.AccountResourceIT.TEST_USER_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -13,6 +14,7 @@ import fran.um.edu.ar.security.AuthoritiesConstants;
 import fran.um.edu.ar.service.UserService;
 import fran.um.edu.ar.service.dto.AdminUserDTO;
 import fran.um.edu.ar.service.dto.PasswordChangeDTO;
+import fran.um.edu.ar.service.dto.UserDTO;
 import fran.um.edu.ar.web.rest.vm.KeyAndPasswordVM;
 import fran.um.edu.ar.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link AccountResource} REST controller.
  */
 @AutoConfigureMockMvc
+@WithMockUser(value = TEST_USER_LOGIN)
 @IntegrationTest
 class AccountResourceIT {
 
@@ -61,16 +64,21 @@ class AccountResourceIT {
     }
 
     @Test
-    @WithMockUser(TEST_USER_LOGIN)
     void testAuthenticatedUser() throws Exception {
         restAccountMockMvc
-            .perform(get("/api/authenticate").with(request -> request).accept(MediaType.APPLICATION_JSON))
+            .perform(
+                get("/api/authenticate")
+                    .with(request -> {
+                        request.setRemoteUser(TEST_USER_LOGIN);
+                        return request;
+                    })
+                    .accept(MediaType.APPLICATION_JSON)
+            )
             .andExpect(status().isOk())
             .andExpect(content().string(TEST_USER_LOGIN));
     }
 
     @Test
-    @WithMockUser(TEST_USER_LOGIN)
     void testGetExistingAccount() throws Exception {
         Set<String> authorities = new HashSet<>();
         authorities.add(AuthoritiesConstants.ADMIN);
@@ -100,7 +108,9 @@ class AccountResourceIT {
 
     @Test
     void testGetUnknownAccount() throws Exception {
-        restAccountMockMvc.perform(get("/api/account").accept(MediaType.APPLICATION_PROBLEM_JSON)).andExpect(status().isUnauthorized());
+        restAccountMockMvc
+            .perform(get("/api/account").accept(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -253,8 +263,8 @@ class AccountResourceIT {
 
         Optional<User> testUser = userRepository.findOneByEmailIgnoreCase("alice2@example.com");
         assertThat(testUser).isPresent();
-        testUser.orElseThrow().setActivated(true);
-        userRepository.save(testUser.orElseThrow());
+        testUser.get().setActivated(true);
+        userRepository.save(testUser.get());
 
         // Second (already activated) user
         restAccountMockMvc
@@ -329,10 +339,10 @@ class AccountResourceIT {
 
         Optional<User> testUser4 = userRepository.findOneByLogin("test-register-duplicate-email-3");
         assertThat(testUser4).isPresent();
-        assertThat(testUser4.orElseThrow().getEmail()).isEqualTo("test-register-duplicate-email@example.com");
+        assertThat(testUser4.get().getEmail()).isEqualTo("test-register-duplicate-email@example.com");
 
-        testUser4.orElseThrow().setActivated(true);
-        userService.updateUser((new AdminUserDTO(testUser4.orElseThrow())));
+        testUser4.get().setActivated(true);
+        userService.updateUser((new AdminUserDTO(testUser4.get())));
 
         // Register 4th (already activated) user
         restAccountMockMvc
@@ -360,9 +370,9 @@ class AccountResourceIT {
 
         Optional<User> userDup = userRepository.findOneWithAuthoritiesByLogin("badguy");
         assertThat(userDup).isPresent();
-        assertThat(userDup.orElseThrow().getAuthorities())
+        assertThat(userDup.get().getAuthorities())
             .hasSize(1)
-            .containsExactly(authorityRepository.findById(AuthoritiesConstants.USER).orElseThrow());
+            .containsExactly(authorityRepository.findById(AuthoritiesConstants.USER).get());
     }
 
     @Test

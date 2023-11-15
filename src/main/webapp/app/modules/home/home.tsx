@@ -16,9 +16,9 @@ export const Home = () => {
         <span className="hipster rounded" />
       </Col>
       <Col md="9">
-        <h1 className="display-4">
+        <h2>
           <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
-        </h1>
+        </h2>
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>

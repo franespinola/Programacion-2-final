@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Table, Badge } from 'reactstrap';
-import { Translate, TextFormat, JhiPagination, JhiItemCount, getPaginationState } from 'react-jhipster';
+import { Translate, TextFormat, JhiPagination, JhiItemCount, getSortState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
@@ -14,11 +13,11 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 export const UserManagement = () => {
   const dispatch = useAppDispatch();
 
-  const pageLocation = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [pagination, setPagination] = useState(
-    overridePaginationStateWithQueryParams(getPaginationState(pageLocation, ITEMS_PER_PAGE, 'id'), pageLocation.search),
+    overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
 
   const getUsersFromProps = () => {
@@ -27,11 +26,11 @@ export const UserManagement = () => {
         page: pagination.activePage - 1,
         size: pagination.itemsPerPage,
         sort: `${pagination.sort},${pagination.order}`,
-      }),
+      })
     );
     const endURL = `?page=${pagination.activePage}&sort=${pagination.sort},${pagination.order}`;
-    if (pageLocation.search !== endURL) {
-      navigate(`${pageLocation.pathname}${endURL}`);
+    if (location.search !== endURL) {
+      navigate(`${location.pathname}${endURL}`);
     }
   };
 
@@ -40,7 +39,7 @@ export const UserManagement = () => {
   }, [pagination.activePage, pagination.order, pagination.sort]);
 
   useEffect(() => {
-    const params = new URLSearchParams(pageLocation.search);
+    const params = new URLSearchParams(location.search);
     const page = params.get('page');
     const sortParam = params.get(SORT);
     if (page && sortParam) {
@@ -52,7 +51,7 @@ export const UserManagement = () => {
         order: sortSplit[1],
       });
     }
-  }, [pageLocation.search]);
+  }, [location.search]);
 
   const sort = p => () =>
     setPagination({
@@ -76,7 +75,7 @@ export const UserManagement = () => {
       updateUser({
         ...user,
         activated: !user.activated,
-      }),
+      })
     );
   };
 
@@ -84,15 +83,6 @@ export const UserManagement = () => {
   const users = useAppSelector(state => state.userManagement.users);
   const totalItems = useAppSelector(state => state.userManagement.totalItems);
   const loading = useAppSelector(state => state.userManagement.loading);
-  const getSortIconByFieldName = (fieldName: string) => {
-    const sortFieldName = pagination.sort;
-    const order = pagination.order;
-    if (sortFieldName !== fieldName) {
-      return faSort;
-    } else {
-      return order === ASC ? faSortUp : faSortDown;
-    }
-  };
 
   return (
     <div>
@@ -112,33 +102,36 @@ export const UserManagement = () => {
         <thead>
           <tr>
             <th className="hand" onClick={sort('id')}>
-              <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+              <Translate contentKey="global.field.id">ID</Translate>
+              <FontAwesomeIcon icon="sort" />
             </th>
             <th className="hand" onClick={sort('login')}>
-              <Translate contentKey="userManagement.login">Login</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('login')} />
+              <Translate contentKey="userManagement.login">Login</Translate>
+              <FontAwesomeIcon icon="sort" />
             </th>
             <th className="hand" onClick={sort('email')}>
-              <Translate contentKey="userManagement.email">Email</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('email')} />
+              <Translate contentKey="userManagement.email">Email</Translate>
+              <FontAwesomeIcon icon="sort" />
             </th>
             <th />
             <th className="hand" onClick={sort('langKey')}>
-              <Translate contentKey="userManagement.langKey">Lang Key</Translate>{' '}
-              <FontAwesomeIcon icon={getSortIconByFieldName('langKey')} />
+              <Translate contentKey="userManagement.langKey">Lang Key</Translate>
+              <FontAwesomeIcon icon="sort" />
             </th>
             <th>
               <Translate contentKey="userManagement.profiles">Profiles</Translate>
             </th>
             <th className="hand" onClick={sort('createdDate')}>
-              <Translate contentKey="userManagement.createdDate">Created Date</Translate>{' '}
-              <FontAwesomeIcon icon={getSortIconByFieldName('createdDate')} />
+              <Translate contentKey="userManagement.createdDate">Created Date</Translate>
+              <FontAwesomeIcon icon="sort" />
             </th>
             <th className="hand" onClick={sort('lastModifiedBy')}>
-              <Translate contentKey="userManagement.lastModifiedBy">Last Modified By</Translate>{' '}
-              <FontAwesomeIcon icon={getSortIconByFieldName('lastModifiedBy')} />
+              <Translate contentKey="userManagement.lastModifiedBy">Last Modified By</Translate>
+              <FontAwesomeIcon icon="sort" />
             </th>
             <th id="modified-date-sort" className="hand" onClick={sort('lastModifiedDate')}>
-              <Translate contentKey="userManagement.lastModifiedDate">Last Modified Date</Translate>{' '}
-              <FontAwesomeIcon icon={getSortIconByFieldName('lastModifiedDate')} />
+              <Translate contentKey="userManagement.lastModifiedDate">Last Modified Date</Translate>
+              <FontAwesomeIcon icon="sort" />
             </th>
             <th />
           </tr>

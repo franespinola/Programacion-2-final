@@ -50,7 +50,7 @@ export const authenticate = createAsyncThunk(
   async (auth: IAuthParams) => axios.post<any>('api/authenticate', auth),
   {
     serializeError: serializeAxiosError,
-  },
+  }
 );
 
 export const login: (username: string, password: string, rememberMe?: boolean) => AppThunk =

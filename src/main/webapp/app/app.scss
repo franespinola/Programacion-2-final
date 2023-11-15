@@ -1,7 +1,6 @@
-// Override Bootstrap variables
-@import 'bootstrap-variables';
+// Override Boostrap variables
 // Import Bootstrap source files from node_modules
-@import 'bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap';
 body {
   background: #fafafa;
   margin: 0;
@@ -105,9 +104,7 @@ Generic styles
 }
 
 .shadow {
-  box-shadow:
-    rgba(0, 0, 0, 0.12) 0px 1px 6px,
-    rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
   border-radius: 2px;
 }
 

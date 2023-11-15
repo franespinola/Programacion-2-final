@@ -12,7 +12,7 @@ export const Login = () => {
   const showModalLogin = useAppSelector(state => state.authentication.showModalLogin);
   const [showModal, setShowModal] = useState(showModalLogin);
   const navigate = useNavigate();
-  const pageLocation = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     setShowModal(true);
@@ -25,7 +25,7 @@ export const Login = () => {
     navigate('/');
   };
 
-  const { from } = pageLocation.state || { from: { pathname: '/', search: pageLocation.search } };
+  const { from } = (location.state as any) || { from: { pathname: '/', search: location.search } };
   if (isAuthenticated) {
     return <Navigate to={from} replace />;
   }

@@ -99,7 +99,7 @@ describe('User management reducer tests', () => {
             errorMessage: 'error happened',
           });
         },
-        { message: 'error happened' },
+        { message: 'error happened' }
       );
     });
   });

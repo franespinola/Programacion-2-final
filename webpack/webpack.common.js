@@ -118,7 +118,7 @@ module.exports = async options => {
               globOptions: { ignore: ['**/index.html'] },
             },
             {
-              from: path.join(path.dirname(require.resolve('axios/package.json')), 'dist/axios.min.js'),
+              from: require.resolve('axios/dist/axios.min.js'),
               to: 'swagger-ui/',
             },
             { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui/' },
@@ -139,14 +139,12 @@ module.exports = async options => {
           output: {
             groupBy: [
               { pattern: './src/main/webapp/i18n/es/*.json', fileName: './i18n/es.json' },
-              { pattern: './src/main/webapp/i18n/en/*.json', fileName: './i18n/en.json' },
-              { pattern: './src/main/webapp/i18n/fr/*.json', fileName: './i18n/fr.json' },
               // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
             ],
           },
         }),
       ],
-    },
+    }
     // jhipster-needle-add-webpack-config - JHipster will add custom config
   );
 };

@@ -9,7 +9,7 @@ import fran.um.edu.ar.IntegrationTest;
 import fran.um.edu.ar.domain.User;
 import fran.um.edu.ar.repository.UserRepository;
 import fran.um.edu.ar.security.AuthoritiesConstants;
-import jakarta.persistence.EntityManager;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Integration tests for the {@link PublicUserResource} REST controller.
+ * Integration tests for the {@link UserResource} REST controller.
  */
 @AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)

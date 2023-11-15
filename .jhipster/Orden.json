@@ -1,0 +1,42 @@
+{
+  "changelogDate": "20231115193357",
+  "fields": [
+    {
+      "fieldName": "cliente",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "accionId",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "accion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "operacion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "precio",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "cantidad",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "fechaOperacion",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "modo",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Orden",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

@@ -19,10 +19,17 @@ logging:
     tech.jhipster: INFO
     fran.um.edu.ar: INFO
 
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
+
 management:
-  prometheus:
-    metrics:
-      export:
+  metrics:
+    export:
+      prometheus:
         enabled: false
 
 spring:
@@ -31,9 +38,21 @@ spring:
       enabled: false
     livereload:
       enabled: false
+  cloud:
+    config:
+      retry:
+        initial-interval: 1000
+        max-interval: 2000
+        max-attempts: 100
+      uri: http://admin:${jhipster.registry.password}@localhost:8761/config
+      # name of the config server's property source (file.yml) that we want to use
+      name: programacion2Final
+      profile: prod
+      label: main # toggle to switch to a different version of the configuration as stored in git
+      # it can be set to any label, branch or commit of the configuration source Git repository
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/Programacion2final?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/programacion2Final?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password:
     hikari:
@@ -44,6 +63,7 @@ spring:
         prepStmtCacheSize: 250
         prepStmtCacheSqlLimit: 2048
         useServerPrepStmts: true
+  jpa:
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
@@ -54,6 +74,20 @@ spring:
     password:
   thymeleaf:
     cache: true
+  sleuth:
+    # https://github.com/spring-projects/spring-framework/issues/27844#issuescomment-1002866885
+    # https://github.com/spring-cloud/spring-cloud-sleuth/issues/2094
+    async:
+      enabled: false
+    enabled: false
+    sampler:
+      probability: 1 # report 100% of traces
+  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
+    base-url: http://localhost:9411
+    enabled: false
+    locator:
+      discovery:
+        enabled: true
 
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
@@ -96,15 +130,17 @@ jhipster:
     ehcache: # Ehcache configuration
       time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
       max-entries: 1000 # Number of objects in each cache entry
+  registry:
+    password: admin
   security:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
         # As this is the PRODUCTION configuration, you MUST change the default key, and store it securely:
-        # - In the Consul configserver
+        # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: NmI1ZWZhNjE2NGIyMzYxYzBkM2YwY2Y3NmRmMWQyZTI4ODU2MDUzZjA2MGM1NzFlOTc3OTI3Mjk4NmM2ZDNjY2I2NjE2NGU1MDYwNWFkNWExOGQxYTJiMzFjMjE3NDYxMTUxYjQ5ZDA0ZDA4NTgzOWEzZDkyOGIyOTVlNzAwNTA=
+        base64-secret: OTU0OGQzMjUyNWIyZmY5ZjRkMzUzY2E0NGVhODVhNDFiNGUxZDUwMzc0NDk3YmMyNWViYzJkZGUyZTkxYjdiYTE3NmVhNGU1MzE2MTZhZTExZDNkZjUxMzM2YWRiM2VmNjkwZmEzNGE1M2I5OWYzMmY4NDY2YTJhMmI5ZGVjOTk=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
@@ -116,7 +152,7 @@ jhipster:
       enabled: false
       host: localhost
       port: 5000
-      ring-buffer-size: 512
+      queue-size: 512
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

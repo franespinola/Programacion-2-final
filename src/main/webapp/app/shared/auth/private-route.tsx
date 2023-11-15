@@ -1,11 +1,11 @@
 import React from 'react';
-import { useLocation, Navigate, PathRouteProps } from 'react-router-dom';
+import { RouteProps, useLocation, Navigate } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
 
 import { useAppSelector } from 'app/config/store';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 
-interface IOwnProps extends PathRouteProps {
+interface IOwnProps extends RouteProps {
   hasAnyAuthorities?: string[];
   children: React.ReactNode;
 }
@@ -15,7 +15,7 @@ export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwn
   const sessionHasBeenFetched = useAppSelector(state => state.authentication.sessionHasBeenFetched);
   const account = useAppSelector(state => state.authentication.account);
   const isAuthorized = hasAnyAuthority(account.authorities, hasAnyAuthorities);
-  const pageLocation = useLocation();
+  const location = useLocation();
 
   if (!children) {
     throw new Error(`A component needs to be specified for private route for path ${(rest as any).path}`);
@@ -43,10 +43,10 @@ export const PrivateRoute = ({ children, hasAnyAuthorities = [], ...rest }: IOwn
     <Navigate
       to={{
         pathname: '/login',
-        search: pageLocation.search,
+        search: location.search,
       }}
       replace
-      state={{ from: pageLocation }}
+      state={{ from: location }}
     />
   );
 };
