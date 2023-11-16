@@ -9,10 +9,10 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.cons
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IOrden } from 'app/shared/model/orden.model';
-import { getEntities } from './orden.reducer';
+import { IOrdenes } from 'app/shared/model/ordenes.model';
+import { getEntities } from './ordenes.reducer';
 
-export const Orden = () => {
+export const Ordenes = () => {
   const dispatch = useAppDispatch();
 
   const location = useLocation();
@@ -22,9 +22,9 @@ export const Orden = () => {
     overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
 
-  const ordenList = useAppSelector(state => state.orden.entities);
-  const loading = useAppSelector(state => state.orden.loading);
-  const totalItems = useAppSelector(state => state.orden.totalItems);
+  const ordenesList = useAppSelector(state => state.ordenes.entities);
+  const loading = useAppSelector(state => state.ordenes.loading);
+  const totalItems = useAppSelector(state => state.ordenes.totalItems);
 
   const getAllEntities = () => {
     dispatch(
@@ -83,75 +83,77 @@ export const Orden = () => {
 
   return (
     <div>
-      <h2 id="orden-heading" data-cy="OrdenHeading">
-        <Translate contentKey="programacion2FinalApp.orden.home.title">Ordens</Translate>
+      <h2 id="ordenes-heading" data-cy="OrdenesHeading">
+        <Translate contentKey="programacion2App.ordenes.home.title">Ordenes</Translate>
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="programacion2FinalApp.orden.home.refreshListLabel">Refresh List</Translate>
+            <Translate contentKey="programacion2App.ordenes.home.refreshListLabel">Refresh List</Translate>
           </Button>
-          <Link to="/orden/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+          <Link to="/ordenes/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
             &nbsp;
-            <Translate contentKey="programacion2FinalApp.orden.home.createLabel">Create new Orden</Translate>
+            <Translate contentKey="programacion2App.ordenes.home.createLabel">Create new Ordenes</Translate>
           </Link>
         </div>
       </h2>
       <div className="table-responsive">
-        {ordenList && ordenList.length > 0 ? (
+        {ordenesList && ordenesList.length > 0 ? (
           <Table responsive>
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="programacion2FinalApp.orden.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="programacion2App.ordenes.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('cliente')}>
-                  <Translate contentKey="programacion2FinalApp.orden.cliente">Cliente</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="programacion2App.ordenes.cliente">Cliente</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('accionId')}>
-                  <Translate contentKey="programacion2FinalApp.orden.accionId">Accion Id</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="programacion2App.ordenes.accionId">Accion Id</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('accion')}>
-                  <Translate contentKey="programacion2FinalApp.orden.accion">Accion</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="programacion2App.ordenes.accion">Accion</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('operacion')}>
-                  <Translate contentKey="programacion2FinalApp.orden.operacion">Operacion</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="programacion2App.ordenes.operacion">Operacion</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('precio')}>
-                  <Translate contentKey="programacion2FinalApp.orden.precio">Precio</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="programacion2App.ordenes.precio">Precio</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('cantidad')}>
-                  <Translate contentKey="programacion2FinalApp.orden.cantidad">Cantidad</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="programacion2App.ordenes.cantidad">Cantidad</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('fechaOperacion')}>
-                  <Translate contentKey="programacion2FinalApp.orden.fechaOperacion">Fecha Operacion</Translate>{' '}
+                  <Translate contentKey="programacion2App.ordenes.fechaOperacion">Fecha Operacion</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('modo')}>
-                  <Translate contentKey="programacion2FinalApp.orden.modo">Modo</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="programacion2App.ordenes.modo">Modo</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {ordenList.map((orden, i) => (
+              {ordenesList.map((ordenes, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
-                    <Button tag={Link} to={`/orden/${orden.id}`} color="link" size="sm">
-                      {orden.id}
+                    <Button tag={Link} to={`/ordenes/${ordenes.id}`} color="link" size="sm">
+                      {ordenes.id}
                     </Button>
                   </td>
-                  <td>{orden.cliente}</td>
-                  <td>{orden.accionId}</td>
-                  <td>{orden.accion}</td>
-                  <td>{orden.operacion}</td>
-                  <td>{orden.precio}</td>
-                  <td>{orden.cantidad}</td>
-                  <td>{orden.fechaOperacion ? <TextFormat type="date" value={orden.fechaOperacion} format={APP_DATE_FORMAT} /> : null}</td>
-                  <td>{orden.modo}</td>
+                  <td>{ordenes.cliente}</td>
+                  <td>{ordenes.accionId}</td>
+                  <td>{ordenes.accion}</td>
+                  <td>{ordenes.operacion}</td>
+                  <td>{ordenes.precio}</td>
+                  <td>{ordenes.cantidad}</td>
+                  <td>
+                    {ordenes.fechaOperacion ? <TextFormat type="date" value={ordenes.fechaOperacion} format={APP_DATE_FORMAT} /> : null}
+                  </td>
+                  <td>{ordenes.modo}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`/orden/${orden.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                      <Button tag={Link} to={`/ordenes/${ordenes.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
@@ -159,7 +161,7 @@ export const Orden = () => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`/orden/${orden.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`/ordenes/${ordenes.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
                         size="sm"
                         data-cy="entityEditButton"
@@ -171,7 +173,7 @@ export const Orden = () => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`/orden/${orden.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`/ordenes/${ordenes.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="danger"
                         size="sm"
                         data-cy="entityDeleteButton"
@@ -190,13 +192,13 @@ export const Orden = () => {
         ) : (
           !loading && (
             <div className="alert alert-warning">
-              <Translate contentKey="programacion2FinalApp.orden.home.notFound">No Ordens found</Translate>
+              <Translate contentKey="programacion2App.ordenes.home.notFound">No Ordenes found</Translate>
             </div>
           )
         )}
       </div>
       {totalItems ? (
-        <div className={ordenList && ordenList.length > 0 ? '' : 'd-none'}>
+        <div className={ordenesList && ordenesList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
             <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
           </div>
@@ -217,4 +219,4 @@ export const Orden = () => {
   );
 };
 
-export default Orden;
+export default Ordenes;

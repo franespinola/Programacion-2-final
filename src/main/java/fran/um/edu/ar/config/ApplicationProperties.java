@@ -3,7 +3,7 @@ package fran.um.edu.ar.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Properties specific to Programacion 2 Final.
+ * Properties specific to Programacion 2.
  * <p>
  * Properties are configured in the {@code application.yml} file.
  * See {@link tech.jhipster.config.JHipsterProperties} for a good example.

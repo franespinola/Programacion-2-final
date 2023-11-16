@@ -1,8 +1,8 @@
 {
-  "name": "programacion-2-final",
+  "name": "programacion-2",
   "version": "0.0.1-SNAPSHOT",
   "private": true,
-  "description": "Description for programacion2Final",
+  "description": "Description for programacion2",
   "license": "UNLICENSED",
   "scripts": {
     "app:start": "./mvnw",

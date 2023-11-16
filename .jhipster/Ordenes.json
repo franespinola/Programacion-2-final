@@ -1,5 +1,5 @@
 {
-  "changelogDate": "20231115193357",
+  "changelogDate": "20231116141755",
   "fields": [
     {
       "fieldName": "cliente",
@@ -34,7 +34,7 @@
       "fieldType": "String"
     }
   ],
-  "name": "Orden",
+  "name": "Ordenes",
   "pagination": "pagination",
   "readOnly": false,
   "relationships": [],

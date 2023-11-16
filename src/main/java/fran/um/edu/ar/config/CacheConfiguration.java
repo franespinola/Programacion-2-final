@@ -51,7 +51,7 @@ public class CacheConfiguration {
             createCache(cm, fran.um.edu.ar.domain.User.class.getName());
             createCache(cm, fran.um.edu.ar.domain.Authority.class.getName());
             createCache(cm, fran.um.edu.ar.domain.User.class.getName() + ".authorities");
-            createCache(cm, fran.um.edu.ar.domain.Orden.class.getName());
+            createCache(cm, fran.um.edu.ar.domain.Ordenes.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

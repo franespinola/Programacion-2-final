@@ -17,12 +17,12 @@ eureka:
   client:
     enabled: false
   instance:
-    appname: programacion2Final
-    instanceId: programacion2Final:${spring.application.instance-id:${random.value}}
+    appname: programacion2
+    instanceId: programacion2:${spring.application.instance-id:${random.value}}
 
 spring:
   application:
-    name: programacion2Final
+    name: programacion2
   cloud:
     config:
       enabled: false
@@ -43,13 +43,13 @@ spring:
     basename: i18n/messages
   task:
     execution:
-      thread-name-prefix: programacion-2-final-task-
+      thread-name-prefix: programacion-2-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: programacion-2-final-scheduling-
+      thread-name-prefix: programacion-2-scheduling-
       pool:
         size: 20
   thymeleaf:
@@ -66,9 +66,9 @@ server:
 # ===================================================================
 jhipster:
   clientApp:
-    name: 'programacion2FinalApp'
+    name: 'programacion2App'
   mail:
-    from: programacion2Final@localhost.com
+    from: programacion2@localhost.com
     base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender
@@ -82,7 +82,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: OTU0OGQzMjUyNWIyZmY5ZjRkMzUzY2E0NGVhODVhNDFiNGUxZDUwMzc0NDk3YmMyNWViYzJkZGUyZTkxYjdiYTE3NmVhNGU1MzE2MTZhZTExZDNkZjUxMzM2YWRiM2VmNjkwZmEzNGE1M2I5OWYzMmY4NDY2YTJhMmI5ZGVjOTk=
+        base64-secret: MTIxMGZjMjgzNTdhZTY3MjdjMWJhZjE4NWVkMjI4OTBhY2MzMmZlNjdkNDM0ZWU2NzhjMTY2OTExN2MwNjllNzFjNmQzOWUzNTk2M2Q5NmI5NDgyYWQ1ZmQxNGY4ODhjZWQ5N2ZmMmQzN2UzYmI1ZjE0YTYzMTJkOWUyZWQ5Yjk=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
 

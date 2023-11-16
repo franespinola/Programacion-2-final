@@ -8,10 +8,10 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IOrden } from 'app/shared/model/orden.model';
-import { getEntity, updateEntity, createEntity, reset } from './orden.reducer';
+import { IOrdenes } from 'app/shared/model/ordenes.model';
+import { getEntity, updateEntity, createEntity, reset } from './ordenes.reducer';
 
-export const OrdenUpdate = () => {
+export const OrdenesUpdate = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -19,13 +19,13 @@ export const OrdenUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  const ordenEntity = useAppSelector(state => state.orden.entity);
-  const loading = useAppSelector(state => state.orden.loading);
-  const updating = useAppSelector(state => state.orden.updating);
-  const updateSuccess = useAppSelector(state => state.orden.updateSuccess);
+  const ordenesEntity = useAppSelector(state => state.ordenes.entity);
+  const loading = useAppSelector(state => state.ordenes.loading);
+  const updating = useAppSelector(state => state.ordenes.updating);
+  const updateSuccess = useAppSelector(state => state.ordenes.updateSuccess);
 
   const handleClose = () => {
-    navigate('/orden' + location.search);
+    navigate('/ordenes' + location.search);
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const OrdenUpdate = () => {
     values.fechaOperacion = convertDateTimeToServer(values.fechaOperacion);
 
     const entity = {
-      ...ordenEntity,
+      ...ordenesEntity,
       ...values,
     };
 
@@ -63,16 +63,16 @@ export const OrdenUpdate = () => {
           fechaOperacion: displayDefaultDateTime(),
         }
       : {
-          ...ordenEntity,
-          fechaOperacion: convertDateTimeFromServer(ordenEntity.fechaOperacion),
+          ...ordenesEntity,
+          fechaOperacion: convertDateTimeFromServer(ordenesEntity.fechaOperacion),
         };
 
   return (
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="programacion2FinalApp.orden.home.createOrEditLabel" data-cy="OrdenCreateUpdateHeading">
-            <Translate contentKey="programacion2FinalApp.orden.home.createOrEditLabel">Create or edit a Orden</Translate>
+          <h2 id="programacion2App.ordenes.home.createOrEditLabel" data-cy="OrdenesCreateUpdateHeading">
+            <Translate contentKey="programacion2App.ordenes.home.createOrEditLabel">Create or edit a Ordenes</Translate>
           </h2>
         </Col>
       </Row>
@@ -87,69 +87,63 @@ export const OrdenUpdate = () => {
                   name="id"
                   required
                   readOnly
-                  id="orden-id"
+                  id="ordenes-id"
                   label={translate('global.field.id')}
                   validate={{ required: true }}
                 />
               ) : null}
               <ValidatedField
-                label={translate('programacion2FinalApp.orden.cliente')}
-                id="orden-cliente"
+                label={translate('programacion2App.ordenes.cliente')}
+                id="ordenes-cliente"
                 name="cliente"
                 data-cy="cliente"
                 type="text"
               />
               <ValidatedField
-                label={translate('programacion2FinalApp.orden.accionId')}
-                id="orden-accionId"
+                label={translate('programacion2App.ordenes.accionId')}
+                id="ordenes-accionId"
                 name="accionId"
                 data-cy="accionId"
                 type="text"
               />
               <ValidatedField
-                label={translate('programacion2FinalApp.orden.accion')}
-                id="orden-accion"
+                label={translate('programacion2App.ordenes.accion')}
+                id="ordenes-accion"
                 name="accion"
                 data-cy="accion"
                 type="text"
               />
               <ValidatedField
-                label={translate('programacion2FinalApp.orden.operacion')}
-                id="orden-operacion"
+                label={translate('programacion2App.ordenes.operacion')}
+                id="ordenes-operacion"
                 name="operacion"
                 data-cy="operacion"
                 type="text"
               />
               <ValidatedField
-                label={translate('programacion2FinalApp.orden.precio')}
-                id="orden-precio"
+                label={translate('programacion2App.ordenes.precio')}
+                id="ordenes-precio"
                 name="precio"
                 data-cy="precio"
                 type="text"
               />
               <ValidatedField
-                label={translate('programacion2FinalApp.orden.cantidad')}
-                id="orden-cantidad"
+                label={translate('programacion2App.ordenes.cantidad')}
+                id="ordenes-cantidad"
                 name="cantidad"
                 data-cy="cantidad"
                 type="text"
               />
               <ValidatedField
-                label={translate('programacion2FinalApp.orden.fechaOperacion')}
-                id="orden-fechaOperacion"
+                label={translate('programacion2App.ordenes.fechaOperacion')}
+                id="ordenes-fechaOperacion"
                 name="fechaOperacion"
                 data-cy="fechaOperacion"
                 type="datetime-local"
                 placeholder="YYYY-MM-DD HH:mm"
               />
-              <ValidatedField
-                label={translate('programacion2FinalApp.orden.modo')}
-                id="orden-modo"
-                name="modo"
-                data-cy="modo"
-                type="text"
-              />
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/orden" replace color="info">
+              <ValidatedField label={translate('programacion2App.ordenes.modo')} id="ordenes-modo" name="modo" data-cy="modo" type="text" />
+              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/ordenes" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">
@@ -170,4 +164,4 @@ export const OrdenUpdate = () => {
   );
 };
 
-export default OrdenUpdate;
+export default OrdenesUpdate;

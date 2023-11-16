@@ -5,9 +5,9 @@ import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getEntity, deleteEntity } from './orden.reducer';
+import { getEntity, deleteEntity } from './ordenes.reducer';
 
-export const OrdenDeleteDialog = () => {
+export const OrdenesDeleteDialog = () => {
   const dispatch = useAppDispatch();
 
   const location = useLocation();
@@ -21,11 +21,11 @@ export const OrdenDeleteDialog = () => {
     setLoadModal(true);
   }, []);
 
-  const ordenEntity = useAppSelector(state => state.orden.entity);
-  const updateSuccess = useAppSelector(state => state.orden.updateSuccess);
+  const ordenesEntity = useAppSelector(state => state.ordenes.entity);
+  const updateSuccess = useAppSelector(state => state.ordenes.updateSuccess);
 
   const handleClose = () => {
-    navigate('/orden' + location.search);
+    navigate('/ordenes' + location.search);
   };
 
   useEffect(() => {
@@ -36,17 +36,17 @@ export const OrdenDeleteDialog = () => {
   }, [updateSuccess]);
 
   const confirmDelete = () => {
-    dispatch(deleteEntity(ordenEntity.id));
+    dispatch(deleteEntity(ordenesEntity.id));
   };
 
   return (
     <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose} data-cy="ordenDeleteDialogHeading">
+      <ModalHeader toggle={handleClose} data-cy="ordenesDeleteDialogHeading">
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="programacion2FinalApp.orden.delete.question">
-        <Translate contentKey="programacion2FinalApp.orden.delete.question" interpolate={{ id: ordenEntity.id }}>
-          Are you sure you want to delete this Orden?
+      <ModalBody id="programacion2App.ordenes.delete.question">
+        <Translate contentKey="programacion2App.ordenes.delete.question" interpolate={{ id: ordenesEntity.id }}>
+          Are you sure you want to delete this Ordenes?
         </Translate>
       </ModalBody>
       <ModalFooter>
@@ -55,7 +55,7 @@ export const OrdenDeleteDialog = () => {
           &nbsp;
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
-        <Button id="jhi-confirm-delete-orden" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
+        <Button id="jhi-confirm-delete-ordenes" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />
           &nbsp;
           <Translate contentKey="entity.action.delete">Delete</Translate>
@@ -65,4 +65,4 @@ export const OrdenDeleteDialog = () => {
   );
 };
 
-export default OrdenDeleteDialog;
+export default OrdenesDeleteDialog;

@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 
 import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
 
-import Orden from './orden';
+import Ordenes from './ordenes';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export default () => {
@@ -11,7 +11,7 @@ export default () => {
     <div>
       <ErrorBoundaryRoutes>
         {/* prettier-ignore */}
-        <Route path="orden/*" element={<Orden />} />
+        <Route path="ordenes/*" element={<Ordenes />} />
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
       </ErrorBoundaryRoutes>
     </div>

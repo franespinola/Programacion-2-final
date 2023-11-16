@@ -7,13 +7,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A Orden.
+ * A Ordenes.
  */
 @Entity
-@Table(name = "orden")
+@Table(name = "ordenes")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Orden implements Serializable {
+public class Ordenes implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,7 +52,7 @@ public class Orden implements Serializable {
         return this.id;
     }
 
-    public Orden id(Long id) {
+    public Ordenes id(Long id) {
         this.setId(id);
         return this;
     }
@@ -65,7 +65,7 @@ public class Orden implements Serializable {
         return this.cliente;
     }
 
-    public Orden cliente(Integer cliente) {
+    public Ordenes cliente(Integer cliente) {
         this.setCliente(cliente);
         return this;
     }
@@ -78,7 +78,7 @@ public class Orden implements Serializable {
         return this.accionId;
     }
 
-    public Orden accionId(Integer accionId) {
+    public Ordenes accionId(Integer accionId) {
         this.setAccionId(accionId);
         return this;
     }
@@ -91,7 +91,7 @@ public class Orden implements Serializable {
         return this.accion;
     }
 
-    public Orden accion(String accion) {
+    public Ordenes accion(String accion) {
         this.setAccion(accion);
         return this;
     }
@@ -104,7 +104,7 @@ public class Orden implements Serializable {
         return this.operacion;
     }
 
-    public Orden operacion(String operacion) {
+    public Ordenes operacion(String operacion) {
         this.setOperacion(operacion);
         return this;
     }
@@ -117,7 +117,7 @@ public class Orden implements Serializable {
         return this.precio;
     }
 
-    public Orden precio(Float precio) {
+    public Ordenes precio(Float precio) {
         this.setPrecio(precio);
         return this;
     }
@@ -130,7 +130,7 @@ public class Orden implements Serializable {
         return this.cantidad;
     }
 
-    public Orden cantidad(Integer cantidad) {
+    public Ordenes cantidad(Integer cantidad) {
         this.setCantidad(cantidad);
         return this;
     }
@@ -143,7 +143,7 @@ public class Orden implements Serializable {
         return this.fechaOperacion;
     }
 
-    public Orden fechaOperacion(ZonedDateTime fechaOperacion) {
+    public Ordenes fechaOperacion(ZonedDateTime fechaOperacion) {
         this.setFechaOperacion(fechaOperacion);
         return this;
     }
@@ -156,7 +156,7 @@ public class Orden implements Serializable {
         return this.modo;
     }
 
-    public Orden modo(String modo) {
+    public Ordenes modo(String modo) {
         this.setModo(modo);
         return this;
     }
@@ -172,10 +172,10 @@ public class Orden implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Orden)) {
+        if (!(o instanceof Ordenes)) {
             return false;
         }
-        return id != null && id.equals(((Orden) o).id);
+        return id != null && id.equals(((Ordenes) o).id);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class Orden implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Orden{" +
+        return "Ordenes{" +
             "id=" + getId() +
             ", cliente=" + getCliente() +
             ", accionId=" + getAccionId() +

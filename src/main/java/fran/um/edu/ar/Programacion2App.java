@@ -21,18 +21,18 @@ import tech.jhipster.config.JHipsterConstants;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
-public class Programacion2FinalApp {
+public class Programacion2App {
 
-    private static final Logger log = LoggerFactory.getLogger(Programacion2FinalApp.class);
+    private static final Logger log = LoggerFactory.getLogger(Programacion2App.class);
 
     private final Environment env;
 
-    public Programacion2FinalApp(Environment env) {
+    public Programacion2App(Environment env) {
         this.env = env;
     }
 
     /**
-     * Initializes programacion2Final.
+     * Initializes programacion2.
      * <p>
      * Spring profiles can be configured with a program argument --spring.profiles.active=your-active-profile
      * <p>
@@ -65,7 +65,7 @@ public class Programacion2FinalApp {
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(Programacion2FinalApp.class);
+        SpringApplication app = new SpringApplication(Programacion2App.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);

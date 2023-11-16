@@ -7,9 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntity } from './orden.reducer';
+import { getEntity } from './ordenes.reducer';
 
-export const OrdenDetail = () => {
+export const OrdenesDetail = () => {
   const dispatch = useAppDispatch();
 
   const { id } = useParams<'id'>();
@@ -18,12 +18,12 @@ export const OrdenDetail = () => {
     dispatch(getEntity(id));
   }, []);
 
-  const ordenEntity = useAppSelector(state => state.orden.entity);
+  const ordenesEntity = useAppSelector(state => state.ordenes.entity);
   return (
     <Row>
       <Col md="8">
-        <h2 data-cy="ordenDetailsHeading">
-          <Translate contentKey="programacion2FinalApp.orden.detail.title">Orden</Translate>
+        <h2 data-cy="ordenesDetailsHeading">
+          <Translate contentKey="programacion2App.ordenes.detail.title">Ordenes</Translate>
         </h2>
         <dl className="jh-entity-details">
           <dt>
@@ -31,66 +31,66 @@ export const OrdenDetail = () => {
               <Translate contentKey="global.field.id">ID</Translate>
             </span>
           </dt>
-          <dd>{ordenEntity.id}</dd>
+          <dd>{ordenesEntity.id}</dd>
           <dt>
             <span id="cliente">
-              <Translate contentKey="programacion2FinalApp.orden.cliente">Cliente</Translate>
+              <Translate contentKey="programacion2App.ordenes.cliente">Cliente</Translate>
             </span>
           </dt>
-          <dd>{ordenEntity.cliente}</dd>
+          <dd>{ordenesEntity.cliente}</dd>
           <dt>
             <span id="accionId">
-              <Translate contentKey="programacion2FinalApp.orden.accionId">Accion Id</Translate>
+              <Translate contentKey="programacion2App.ordenes.accionId">Accion Id</Translate>
             </span>
           </dt>
-          <dd>{ordenEntity.accionId}</dd>
+          <dd>{ordenesEntity.accionId}</dd>
           <dt>
             <span id="accion">
-              <Translate contentKey="programacion2FinalApp.orden.accion">Accion</Translate>
+              <Translate contentKey="programacion2App.ordenes.accion">Accion</Translate>
             </span>
           </dt>
-          <dd>{ordenEntity.accion}</dd>
+          <dd>{ordenesEntity.accion}</dd>
           <dt>
             <span id="operacion">
-              <Translate contentKey="programacion2FinalApp.orden.operacion">Operacion</Translate>
+              <Translate contentKey="programacion2App.ordenes.operacion">Operacion</Translate>
             </span>
           </dt>
-          <dd>{ordenEntity.operacion}</dd>
+          <dd>{ordenesEntity.operacion}</dd>
           <dt>
             <span id="precio">
-              <Translate contentKey="programacion2FinalApp.orden.precio">Precio</Translate>
+              <Translate contentKey="programacion2App.ordenes.precio">Precio</Translate>
             </span>
           </dt>
-          <dd>{ordenEntity.precio}</dd>
+          <dd>{ordenesEntity.precio}</dd>
           <dt>
             <span id="cantidad">
-              <Translate contentKey="programacion2FinalApp.orden.cantidad">Cantidad</Translate>
+              <Translate contentKey="programacion2App.ordenes.cantidad">Cantidad</Translate>
             </span>
           </dt>
-          <dd>{ordenEntity.cantidad}</dd>
+          <dd>{ordenesEntity.cantidad}</dd>
           <dt>
             <span id="fechaOperacion">
-              <Translate contentKey="programacion2FinalApp.orden.fechaOperacion">Fecha Operacion</Translate>
+              <Translate contentKey="programacion2App.ordenes.fechaOperacion">Fecha Operacion</Translate>
             </span>
           </dt>
           <dd>
-            {ordenEntity.fechaOperacion ? <TextFormat value={ordenEntity.fechaOperacion} type="date" format={APP_DATE_FORMAT} /> : null}
+            {ordenesEntity.fechaOperacion ? <TextFormat value={ordenesEntity.fechaOperacion} type="date" format={APP_DATE_FORMAT} /> : null}
           </dd>
           <dt>
             <span id="modo">
-              <Translate contentKey="programacion2FinalApp.orden.modo">Modo</Translate>
+              <Translate contentKey="programacion2App.ordenes.modo">Modo</Translate>
             </span>
           </dt>
-          <dd>{ordenEntity.modo}</dd>
+          <dd>{ordenesEntity.modo}</dd>
         </dl>
-        <Button tag={Link} to="/orden" replace color="info" data-cy="entityDetailsBackButton">
+        <Button tag={Link} to="/ordenes" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>
           </span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/orden/${ordenEntity.id}/edit`} replace color="primary">
+        <Button tag={Link} to={`/ordenes/${ordenesEntity.id}/edit`} replace color="primary">
           <FontAwesomeIcon icon="pencil-alt" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.edit">Edit</Translate>
@@ -101,4 +101,4 @@ export const OrdenDetail = () => {
   );
 };
 
-export default OrdenDetail;
+export default OrdenesDetail;

@@ -3,9 +3,9 @@ import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/t
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
-import { IOrden, defaultValue } from 'app/shared/model/orden.model';
+import { IOrdenes, defaultValue } from 'app/shared/model/ordenes.model';
 
-const initialState: EntityState<IOrden> = {
+const initialState: EntityState<IOrdenes> = {
   loading: false,
   errorMessage: null,
   entities: [],
@@ -15,28 +15,28 @@ const initialState: EntityState<IOrden> = {
   updateSuccess: false,
 };
 
-const apiUrl = 'api/ordens';
+const apiUrl = 'api/ordenes';
 
 // Actions
 
-export const getEntities = createAsyncThunk('orden/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
+export const getEntities = createAsyncThunk('ordenes/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
-  return axios.get<IOrden[]>(requestUrl);
+  return axios.get<IOrdenes[]>(requestUrl);
 });
 
 export const getEntity = createAsyncThunk(
-  'orden/fetch_entity',
+  'ordenes/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
-    return axios.get<IOrden>(requestUrl);
+    return axios.get<IOrdenes>(requestUrl);
   },
   { serializeError: serializeAxiosError }
 );
 
 export const createEntity = createAsyncThunk(
-  'orden/create_entity',
-  async (entity: IOrden, thunkAPI) => {
-    const result = await axios.post<IOrden>(apiUrl, cleanEntity(entity));
+  'ordenes/create_entity',
+  async (entity: IOrdenes, thunkAPI) => {
+    const result = await axios.post<IOrdenes>(apiUrl, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -44,9 +44,9 @@ export const createEntity = createAsyncThunk(
 );
 
 export const updateEntity = createAsyncThunk(
-  'orden/update_entity',
-  async (entity: IOrden, thunkAPI) => {
-    const result = await axios.put<IOrden>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+  'ordenes/update_entity',
+  async (entity: IOrdenes, thunkAPI) => {
+    const result = await axios.put<IOrdenes>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -54,9 +54,9 @@ export const updateEntity = createAsyncThunk(
 );
 
 export const partialUpdateEntity = createAsyncThunk(
-  'orden/partial_update_entity',
-  async (entity: IOrden, thunkAPI) => {
-    const result = await axios.patch<IOrden>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+  'ordenes/partial_update_entity',
+  async (entity: IOrdenes, thunkAPI) => {
+    const result = await axios.patch<IOrdenes>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -64,10 +64,10 @@ export const partialUpdateEntity = createAsyncThunk(
 );
 
 export const deleteEntity = createAsyncThunk(
-  'orden/delete_entity',
+  'ordenes/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`;
-    const result = await axios.delete<IOrden>(requestUrl);
+    const result = await axios.delete<IOrdenes>(requestUrl);
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -76,8 +76,8 @@ export const deleteEntity = createAsyncThunk(
 
 // slice
 
-export const OrdenSlice = createEntitySlice({
-  name: 'orden',
+export const OrdenesSlice = createEntitySlice({
+  name: 'ordenes',
   initialState,
   extraReducers(builder) {
     builder
@@ -119,7 +119,7 @@ export const OrdenSlice = createEntitySlice({
   },
 });
 
-export const { reset } = OrdenSlice.actions;
+export const { reset } = OrdenesSlice.actions;
 
 // Reducer
-export default OrdenSlice.reducer;
+export default OrdenesSlice.reducer;

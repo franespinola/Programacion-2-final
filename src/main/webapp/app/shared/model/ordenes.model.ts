@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-export interface IOrden {
+export interface IOrdenes {
   id?: number;
   cliente?: number | null;
   accionId?: number | null;
@@ -12,4 +12,4 @@ export interface IOrden {
   modo?: string | null;
 }
 
-export const defaultValue: Readonly<IOrden> = {};
+export const defaultValue: Readonly<IOrdenes> = {};
