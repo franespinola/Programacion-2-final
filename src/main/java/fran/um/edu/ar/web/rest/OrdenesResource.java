@@ -1,7 +1,10 @@
 package fran.um.edu.ar.web.rest;
 
-import fran.um.edu.ar.domain.Ordenes;
 import fran.um.edu.ar.repository.OrdenesRepository;
+import fran.um.edu.ar.service.OrdenesQueryService;
+import fran.um.edu.ar.service.OrdenesService;
+import fran.um.edu.ar.service.criteria.OrdenesCriteria;
+import fran.um.edu.ar.service.dto.OrdenesDTO;
 import fran.um.edu.ar.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,9 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -28,7 +29,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class OrdenesResource {
 
     private final Logger log = LoggerFactory.getLogger(OrdenesResource.class);
@@ -38,26 +38,32 @@ public class OrdenesResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final OrdenesService ordenesService;
+
     private final OrdenesRepository ordenesRepository;
 
-    public OrdenesResource(OrdenesRepository ordenesRepository) {
+    private final OrdenesQueryService ordenesQueryService;
+
+    public OrdenesResource(OrdenesService ordenesService, OrdenesRepository ordenesRepository, OrdenesQueryService ordenesQueryService) {
+        this.ordenesService = ordenesService;
         this.ordenesRepository = ordenesRepository;
+        this.ordenesQueryService = ordenesQueryService;
     }
 
     /**
      * {@code POST  /ordenes} : Create a new ordenes.
      *
-     * @param ordenes the ordenes to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ordenes, or with status {@code 400 (Bad Request)} if the ordenes has already an ID.
+     * @param ordenesDTO the ordenesDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ordenesDTO, or with status {@code 400 (Bad Request)} if the ordenes has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/ordenes")
-    public ResponseEntity<Ordenes> createOrdenes(@RequestBody Ordenes ordenes) throws URISyntaxException {
-        log.debug("REST request to save Ordenes : {}", ordenes);
-        if (ordenes.getId() != null) {
+    public ResponseEntity<OrdenesDTO> createOrdenes(@RequestBody OrdenesDTO ordenesDTO) throws URISyntaxException {
+        log.debug("REST request to save Ordenes : {}", ordenesDTO);
+        if (ordenesDTO.getId() != null) {
             throw new BadRequestAlertException("A new ordenes cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Ordenes result = ordenesRepository.save(ordenes);
+        OrdenesDTO result = ordenesService.save(ordenesDTO);
         return ResponseEntity
             .created(new URI("/api/ordenes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -67,21 +73,23 @@ public class OrdenesResource {
     /**
      * {@code PUT  /ordenes/:id} : Updates an existing ordenes.
      *
-     * @param id the id of the ordenes to save.
-     * @param ordenes the ordenes to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ordenes,
-     * or with status {@code 400 (Bad Request)} if the ordenes is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the ordenes couldn't be updated.
+     * @param id the id of the ordenesDTO to save.
+     * @param ordenesDTO the ordenesDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ordenesDTO,
+     * or with status {@code 400 (Bad Request)} if the ordenesDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the ordenesDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/ordenes/{id}")
-    public ResponseEntity<Ordenes> updateOrdenes(@PathVariable(value = "id", required = false) final Long id, @RequestBody Ordenes ordenes)
-        throws URISyntaxException {
-        log.debug("REST request to update Ordenes : {}, {}", id, ordenes);
-        if (ordenes.getId() == null) {
+    public ResponseEntity<OrdenesDTO> updateOrdenes(
+        @PathVariable(value = "id", required = false) final Long id,
+        @RequestBody OrdenesDTO ordenesDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Ordenes : {}, {}", id, ordenesDTO);
+        if (ordenesDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, ordenes.getId())) {
+        if (!Objects.equals(id, ordenesDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -89,34 +97,34 @@ public class OrdenesResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Ordenes result = ordenesRepository.save(ordenes);
+        OrdenesDTO result = ordenesService.update(ordenesDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ordenes.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ordenesDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /ordenes/:id} : Partial updates given fields of an existing ordenes, field will ignore if it is null
      *
-     * @param id the id of the ordenes to save.
-     * @param ordenes the ordenes to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ordenes,
-     * or with status {@code 400 (Bad Request)} if the ordenes is not valid,
-     * or with status {@code 404 (Not Found)} if the ordenes is not found,
-     * or with status {@code 500 (Internal Server Error)} if the ordenes couldn't be updated.
+     * @param id the id of the ordenesDTO to save.
+     * @param ordenesDTO the ordenesDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ordenesDTO,
+     * or with status {@code 400 (Bad Request)} if the ordenesDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the ordenesDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the ordenesDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/ordenes/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Ordenes> partialUpdateOrdenes(
+    public ResponseEntity<OrdenesDTO> partialUpdateOrdenes(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody Ordenes ordenes
+        @RequestBody OrdenesDTO ordenesDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Ordenes partially : {}, {}", id, ordenes);
-        if (ordenes.getId() == null) {
+        log.debug("REST request to partial update Ordenes partially : {}, {}", id, ordenesDTO);
+        if (ordenesDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, ordenes.getId())) {
+        if (!Objects.equals(id, ordenesDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -124,41 +132,11 @@ public class OrdenesResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Ordenes> result = ordenesRepository
-            .findById(ordenes.getId())
-            .map(existingOrdenes -> {
-                if (ordenes.getCliente() != null) {
-                    existingOrdenes.setCliente(ordenes.getCliente());
-                }
-                if (ordenes.getAccionId() != null) {
-                    existingOrdenes.setAccionId(ordenes.getAccionId());
-                }
-                if (ordenes.getAccion() != null) {
-                    existingOrdenes.setAccion(ordenes.getAccion());
-                }
-                if (ordenes.getOperacion() != null) {
-                    existingOrdenes.setOperacion(ordenes.getOperacion());
-                }
-                if (ordenes.getPrecio() != null) {
-                    existingOrdenes.setPrecio(ordenes.getPrecio());
-                }
-                if (ordenes.getCantidad() != null) {
-                    existingOrdenes.setCantidad(ordenes.getCantidad());
-                }
-                if (ordenes.getFechaOperacion() != null) {
-                    existingOrdenes.setFechaOperacion(ordenes.getFechaOperacion());
-                }
-                if (ordenes.getModo() != null) {
-                    existingOrdenes.setModo(ordenes.getModo());
-                }
-
-                return existingOrdenes;
-            })
-            .map(ordenesRepository::save);
+        Optional<OrdenesDTO> result = ordenesService.partialUpdate(ordenesDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ordenes.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ordenesDTO.getId().toString())
         );
     }
 
@@ -166,39 +144,55 @@ public class OrdenesResource {
      * {@code GET  /ordenes} : get all the ordenes.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ordenes in body.
      */
     @GetMapping("/ordenes")
-    public ResponseEntity<List<Ordenes>> getAllOrdenes(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Ordenes");
-        Page<Ordenes> page = ordenesRepository.findAll(pageable);
+    public ResponseEntity<List<OrdenesDTO>> getAllOrdenes(
+        OrdenesCriteria criteria,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Ordenes by criteria: {}", criteria);
+        Page<OrdenesDTO> page = ordenesQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
+     * {@code GET  /ordenes/count} : count all the ordenes.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/ordenes/count")
+    public ResponseEntity<Long> countOrdenes(OrdenesCriteria criteria) {
+        log.debug("REST request to count Ordenes by criteria: {}", criteria);
+        return ResponseEntity.ok().body(ordenesQueryService.countByCriteria(criteria));
+    }
+
+    /**
      * {@code GET  /ordenes/:id} : get the "id" ordenes.
      *
-     * @param id the id of the ordenes to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ordenes, or with status {@code 404 (Not Found)}.
+     * @param id the id of the ordenesDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ordenesDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/ordenes/{id}")
-    public ResponseEntity<Ordenes> getOrdenes(@PathVariable Long id) {
+    public ResponseEntity<OrdenesDTO> getOrdenes(@PathVariable Long id) {
         log.debug("REST request to get Ordenes : {}", id);
-        Optional<Ordenes> ordenes = ordenesRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(ordenes);
+        Optional<OrdenesDTO> ordenesDTO = ordenesService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(ordenesDTO);
     }
 
     /**
      * {@code DELETE  /ordenes/:id} : delete the "id" ordenes.
      *
-     * @param id the id of the ordenes to delete.
+     * @param id the id of the ordenesDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/ordenes/{id}")
     public ResponseEntity<Void> deleteOrdenes(@PathVariable Long id) {
         log.debug("REST request to delete Ordenes : {}", id);
-        ordenesRepository.deleteById(id);
+        ordenesService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

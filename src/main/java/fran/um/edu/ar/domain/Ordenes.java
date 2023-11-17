@@ -1,7 +1,7 @@
 package fran.um.edu.ar.domain;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -41,7 +41,7 @@ public class Ordenes implements Serializable {
     private Integer cantidad;
 
     @Column(name = "fecha_operacion")
-    private ZonedDateTime fechaOperacion;
+    private Instant fechaOperacion;
 
     @Column(name = "modo")
     private String modo;
@@ -139,16 +139,16 @@ public class Ordenes implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public ZonedDateTime getFechaOperacion() {
+    public Instant getFechaOperacion() {
         return this.fechaOperacion;
     }
 
-    public Ordenes fechaOperacion(ZonedDateTime fechaOperacion) {
+    public Ordenes fechaOperacion(Instant fechaOperacion) {
         this.setFechaOperacion(fechaOperacion);
         return this;
     }
 
-    public void setFechaOperacion(ZonedDateTime fechaOperacion) {
+    public void setFechaOperacion(Instant fechaOperacion) {
         this.fechaOperacion = fechaOperacion;
     }
 

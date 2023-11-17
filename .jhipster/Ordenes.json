@@ -1,5 +1,6 @@
 {
-  "changelogDate": "20231116141755",
+  "changelogDate": "20231117141147",
+  "dto": "mapstruct",
   "fields": [
     {
       "fieldName": "cliente",
@@ -27,16 +28,17 @@
     },
     {
       "fieldName": "fechaOperacion",
-      "fieldType": "ZonedDateTime"
+      "fieldType": "Instant"
     },
     {
       "fieldName": "modo",
       "fieldType": "String"
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Ordenes",
   "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceImpl"
 }
