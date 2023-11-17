@@ -1,0 +1,31 @@
+{
+  "programacion2App": {
+    "ordenes": {
+      "home": {
+        "title": "Ordenes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Ordenes",
+        "createOrEditLabel": "Crear o editar Ordenes",
+        "notFound": "Ningún Ordenes encontrado"
+      },
+      "created": "Un nuevo Ordenes ha sido creado con el identificador {{ param }}",
+      "updated": "Un Ordenes ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Ordenes ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Ordenes {{ id }}?"
+      },
+      "detail": {
+        "title": "Ordenes"
+      },
+      "id": "ID",
+      "cliente": "Cliente",
+      "accionId": "Accion Id",
+      "accion": "Accion",
+      "operacion": "Operacion",
+      "precio": "Precio",
+      "cantidad": "Cantidad",
+      "fechaOperacion": "Fecha Operacion",
+      "modo": "Modo"
+    }
+  }
+}
