@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="operacion">
+      <h2 data-cy="operacionDetailsHeading"><span jhiTranslate="procesadorOrdenApp.operacion.detail.title">Operacion</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ operacion.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.cliente">Cliente</span></dt>
+        <dd>
+          <span>{{ operacion.cliente }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.accionId">Accion Id</span></dt>
+        <dd>
+          <span>{{ operacion.accionId }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.accion">Accion</span></dt>
+        <dd>
+          <span>{{ operacion.accion }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.precio">Precio</span></dt>
+        <dd>
+          <span>{{ operacion.precio }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.cantidad">Cantidad</span></dt>
+        <dd>
+          <span>{{ operacion.cantidad }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.fechaOperacion">Fecha Operacion</span></dt>
+        <dd>
+          <span>{{ operacion.fechaOperacion | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.modo">Modo</span></dt>
+        <dd>
+          <span>{{ operacion.modo }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.operacionExitosa">Operacion Exitosa</span></dt>
+        <dd>
+          <span>{{ operacion.operacionExitosa }}</span>
+        </dd>
+        <dt><span jhiTranslate="procesadorOrdenApp.operacion.operacionObservaciones">Operacion Observaciones</span></dt>
+        <dd>
+          <span>{{ operacion.operacionObservaciones }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/operacion', operacion.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

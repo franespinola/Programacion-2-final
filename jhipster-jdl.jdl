@@ -1,0 +1,45 @@
+
+application {
+  config {
+    baseName ProcesadorOrden
+    applicationType monolith
+    packageName fran.procesador.orden
+    buildTool maven,
+    devDatabaseType mysql,
+    prodDatabaseType mysql,
+    authenticationType jwt,
+    clientTheme sketchy,
+    languages [es,en],
+    nativeLanguage es,
+    enableSwaggerCodegen true
+  }
+  entities *
+}
+
+entity Orden {
+	cliente Integer
+    accionId Integer
+    accion String
+    precio Float
+    cantidad Integer
+    fechaOperacion Instant
+    modo String
+}
+
+entity Operacion{
+	cliente Integer
+    accionId Integer
+    accion String
+    precio Float
+    cantidad Integer
+    fechaOperacion Instant
+    modo String
+    operacionExitosa Boolean
+    operacionObservaciones String
+}
+
+relationship OneToOne {
+  Orden to Operacion
+}
+
+

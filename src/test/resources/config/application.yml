@@ -13,19 +13,9 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-  client:
-    enabled: false
-  instance:
-    appname: programacion2
-    instanceId: programacion2:${spring.application.instance-id:${random.value}}
-
 spring:
   application:
-    name: programacion2
-  cloud:
-    config:
-      enabled: false
+    name: ProcesadorOrden
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test
@@ -43,13 +33,13 @@ spring:
     basename: i18n/messages
   task:
     execution:
-      thread-name-prefix: programacion-2-task-
+      thread-name-prefix: procesador-orden-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: programacion-2-scheduling-
+      thread-name-prefix: procesador-orden-scheduling-
       pool:
         size: 20
   thymeleaf:
@@ -66,9 +56,9 @@ server:
 # ===================================================================
 jhipster:
   clientApp:
-    name: 'programacion2App'
+    name: 'procesadorOrdenApp'
   mail:
-    from: programacion2@localhost.com
+    from: ProcesadorOrden@localhost.com
     base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender
@@ -82,7 +72,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: ZWFkMzBiOTQ3ODgxYjcyZDFiNWJiN2ViMWMwM2VlMjM0MzMzMTA1ZjUwZDBmNTQ0OTM5MjM0YWU4NjhhMDMxMWRmMjBmOWNjY2YwZTQ0OGEwYmYwODhlMWM0ZjYzNzQwZWI0ZjY4YTVhOGU3YTlhNTVhOTRmZmQ0OTkxOWU0OGI=
+        base64-secret: ZTlkZjBlNmJkYzUyNmU5YjgzOWM4MjMwYmQ4ODA5YzQ5OWE1ODU3MDMzNTc4ZTU0YTFlYmFkZmVmYjBiYTQ4MzA4ZmJmZDAwNzY5YjgzZTcyYmNmNzdkZTEwZDFjNzRmZDg0YjcxMGQ1NzJmZWFlMWMzZGRiZGZkZmZmMDczODQ=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
 

@@ -1,1 +1,1 @@
-org.springframework.test.context.ContextCustomizerFactory = fran.config.TestContainersSpringContextCustomizerFactory
+org.springframework.test.context.ContextCustomizerFactory = fran.procesador.orden.config.TestContainersSpringContextCustomizerFactory

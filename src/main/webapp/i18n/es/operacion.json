@@ -1,0 +1,33 @@
+{
+  "procesadorOrdenApp": {
+    "operacion": {
+      "home": {
+        "title": "Operacions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Operacion",
+        "createOrEditLabel": "Crear o editar Operacion",
+        "notFound": "Ningún Operacions encontrado"
+      },
+      "created": "Un nuevo Operacion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Operacion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Operacion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Operacion {{ id }}?"
+      },
+      "detail": {
+        "title": "Operacion"
+      },
+      "id": "ID",
+      "cliente": "Cliente",
+      "accionId": "Accion Id",
+      "accion": "Accion",
+      "precio": "Precio",
+      "cantidad": "Cantidad",
+      "fechaOperacion": "Fecha Operacion",
+      "modo": "Modo",
+      "operacionExitosa": "Operacion Exitosa",
+      "operacionObservaciones": "Operacion Observaciones",
+      "orden": "Orden"
+    }
+  }
+}

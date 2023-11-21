@@ -1,0 +1,144 @@
+<div>
+  <h2 id="page-heading" data-cy="OperacionHeading">
+    <span jhiTranslate="procesadorOrdenApp.operacion.home.title">Operacions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="procesadorOrdenApp.operacion.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-operacion"
+        [routerLink]="['/operacion/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="procesadorOrdenApp.operacion.home.createLabel"> Crear nuevo Operacion </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="operacions?.length === 0">
+    <span jhiTranslate="procesadorOrdenApp.operacion.home.notFound">Ningún Operacions encontrado</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="operacions && operacions.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="cliente">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.cliente">Cliente</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="accionId">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.accionId">Accion Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="accion">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.accion">Accion</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="precio">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.precio">Precio</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="cantidad">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.cantidad">Cantidad</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="fechaOperacion">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.fechaOperacion">Fecha Operacion</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="modo">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.modo">Modo</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="operacionExitosa">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.operacionExitosa">Operacion Exitosa</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="operacionObservaciones">
+            <div class="d-flex">
+              <span jhiTranslate="procesadorOrdenApp.operacion.operacionObservaciones">Operacion Observaciones</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let operacion of operacions; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/operacion', operacion.id, 'view']">{{ operacion.id }}</a>
+          </td>
+          <td>{{ operacion.cliente }}</td>
+          <td>{{ operacion.accionId }}</td>
+          <td>{{ operacion.accion }}</td>
+          <td>{{ operacion.precio }}</td>
+          <td>{{ operacion.cantidad }}</td>
+          <td>{{ operacion.fechaOperacion | formatMediumDatetime }}</td>
+          <td>{{ operacion.modo }}</td>
+          <td>{{ operacion.operacionExitosa }}</td>
+          <td>{{ operacion.operacionObservaciones }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/operacion', operacion.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/operacion', operacion.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+              </button>
+
+              <button type="submit" (click)="delete(operacion)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+{
+  "applications": ["ProcesadorOrden"],
+  "changelogDate": "20231121203013",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "operacion",
+  "fields": [
+    {
+      "fieldName": "cliente",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "accionId",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "accion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "precio",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "cantidad",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "fechaOperacion",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "modo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "operacionExitosa",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "operacionObservaciones",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Operacion",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "orden",
+      "otherEntityRelationshipName": "operacion",
+      "ownerSide": false,
+      "relationshipName": "orden",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "no"
+}
