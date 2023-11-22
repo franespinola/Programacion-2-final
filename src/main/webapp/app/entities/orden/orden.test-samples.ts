@@ -11,7 +11,7 @@ export const sampleWithPartialData: IOrden = {
   cliente: 68425,
   accionId: 80323,
   accion: 'Avon deposit',
-  fechaOperacion: dayjs('2023-11-21T18:52'),
+  fechaOperacion: dayjs('2023-11-22T13:50'),
 };
 
 export const sampleWithFullData: IOrden = {
@@ -21,7 +21,7 @@ export const sampleWithFullData: IOrden = {
   accion: 'Guantes',
   precio: 72787,
   cantidad: 43977,
-  fechaOperacion: dayjs('2023-11-21T10:15'),
+  fechaOperacion: dayjs('2023-11-22T05:13'),
   modo: 'customized País SSL',
 };
 

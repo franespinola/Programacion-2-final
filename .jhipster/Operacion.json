@@ -1,6 +1,6 @@
 {
   "applications": ["ProcesadorOrden"],
-  "changelogDate": "20231121203013",
+  "changelogDate": "20231122152801",
   "dto": "no",
   "embedded": false,
   "entityTableName": "operacion",
@@ -56,5 +56,5 @@
       "relationshipType": "one-to-one"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

@@ -2,6 +2,7 @@ package fran.procesador.orden.web.rest;
 
 import fran.procesador.orden.domain.Orden;
 import fran.procesador.orden.repository.OrdenRepository;
+import fran.procesador.orden.service.OrdenService;
 import fran.procesador.orden.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -22,7 +22,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class OrdenResource {
 
     private final Logger log = LoggerFactory.getLogger(OrdenResource.class);
@@ -32,9 +31,12 @@ public class OrdenResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final OrdenService ordenService;
+
     private final OrdenRepository ordenRepository;
 
-    public OrdenResource(OrdenRepository ordenRepository) {
+    public OrdenResource(OrdenService ordenService, OrdenRepository ordenRepository) {
+        this.ordenService = ordenService;
         this.ordenRepository = ordenRepository;
     }
 
@@ -51,7 +53,7 @@ public class OrdenResource {
         if (orden.getId() != null) {
             throw new BadRequestAlertException("A new orden cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Orden result = ordenRepository.save(orden);
+        Orden result = ordenService.save(orden);
         return ResponseEntity
             .created(new URI("/api/ordens/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -83,7 +85,7 @@ public class OrdenResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Orden result = ordenRepository.save(orden);
+        Orden result = ordenService.update(orden);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, orden.getId().toString()))
@@ -116,34 +118,7 @@ public class OrdenResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Orden> result = ordenRepository
-            .findById(orden.getId())
-            .map(existingOrden -> {
-                if (orden.getCliente() != null) {
-                    existingOrden.setCliente(orden.getCliente());
-                }
-                if (orden.getAccionId() != null) {
-                    existingOrden.setAccionId(orden.getAccionId());
-                }
-                if (orden.getAccion() != null) {
-                    existingOrden.setAccion(orden.getAccion());
-                }
-                if (orden.getPrecio() != null) {
-                    existingOrden.setPrecio(orden.getPrecio());
-                }
-                if (orden.getCantidad() != null) {
-                    existingOrden.setCantidad(orden.getCantidad());
-                }
-                if (orden.getFechaOperacion() != null) {
-                    existingOrden.setFechaOperacion(orden.getFechaOperacion());
-                }
-                if (orden.getModo() != null) {
-                    existingOrden.setModo(orden.getModo());
-                }
-
-                return existingOrden;
-            })
-            .map(ordenRepository::save);
+        Optional<Orden> result = ordenService.partialUpdate(orden);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -159,7 +134,7 @@ public class OrdenResource {
     @GetMapping("/ordens")
     public List<Orden> getAllOrdens() {
         log.debug("REST request to get all Ordens");
-        return ordenRepository.findAll();
+        return ordenService.findAll();
     }
 
     /**
@@ -171,7 +146,7 @@ public class OrdenResource {
     @GetMapping("/ordens/{id}")
     public ResponseEntity<Orden> getOrden(@PathVariable Long id) {
         log.debug("REST request to get Orden : {}", id);
-        Optional<Orden> orden = ordenRepository.findById(id);
+        Optional<Orden> orden = ordenService.findOne(id);
         return ResponseUtil.wrapOrNotFound(orden);
     }
 
@@ -184,7 +159,7 @@ public class OrdenResource {
     @DeleteMapping("/ordens/{id}")
     public ResponseEntity<Void> deleteOrden(@PathVariable Long id) {
         log.debug("REST request to delete Orden : {}", id);
-        ordenRepository.deleteById(id);
+        ordenService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

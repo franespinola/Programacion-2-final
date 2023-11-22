@@ -42,4 +42,8 @@ relationship OneToOne {
   Orden to Operacion
 }
 
+service Orden with serviceClass
+service Operacion with serviceClass
+
+
 

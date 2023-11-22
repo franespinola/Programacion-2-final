@@ -20,7 +20,7 @@ export const sampleWithFullData: IOperacion = {
   accion: 'Grecia',
   precio: 55585,
   cantidad: 94163,
-  fechaOperacion: dayjs('2023-11-21T03:27'),
+  fechaOperacion: dayjs('2023-11-21T22:24'),
   modo: 'eyeballs Arquitecto',
   operacionExitosa: true,
   operacionObservaciones: 'Directo Bacon clicks-and-mortar',

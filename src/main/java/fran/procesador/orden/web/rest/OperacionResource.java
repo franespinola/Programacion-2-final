@@ -2,19 +2,18 @@ package fran.procesador.orden.web.rest;
 
 import fran.procesador.orden.domain.Operacion;
 import fran.procesador.orden.repository.OperacionRepository;
+import fran.procesador.orden.service.OperacionService;
 import fran.procesador.orden.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,7 +23,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class OperacionResource {
 
     private final Logger log = LoggerFactory.getLogger(OperacionResource.class);
@@ -34,9 +32,12 @@ public class OperacionResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final OperacionService operacionService;
+
     private final OperacionRepository operacionRepository;
 
-    public OperacionResource(OperacionRepository operacionRepository) {
+    public OperacionResource(OperacionService operacionService, OperacionRepository operacionRepository) {
+        this.operacionService = operacionService;
         this.operacionRepository = operacionRepository;
     }
 
@@ -53,7 +54,7 @@ public class OperacionResource {
         if (operacion.getId() != null) {
             throw new BadRequestAlertException("A new operacion cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Operacion result = operacionRepository.save(operacion);
+        Operacion result = operacionService.save(operacion);
         return ResponseEntity
             .created(new URI("/api/operacions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,7 +88,7 @@ public class OperacionResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Operacion result = operacionRepository.save(operacion);
+        Operacion result = operacionService.update(operacion);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, operacion.getId().toString()))
@@ -122,40 +123,7 @@ public class OperacionResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Operacion> result = operacionRepository
-            .findById(operacion.getId())
-            .map(existingOperacion -> {
-                if (operacion.getCliente() != null) {
-                    existingOperacion.setCliente(operacion.getCliente());
-                }
-                if (operacion.getAccionId() != null) {
-                    existingOperacion.setAccionId(operacion.getAccionId());
-                }
-                if (operacion.getAccion() != null) {
-                    existingOperacion.setAccion(operacion.getAccion());
-                }
-                if (operacion.getPrecio() != null) {
-                    existingOperacion.setPrecio(operacion.getPrecio());
-                }
-                if (operacion.getCantidad() != null) {
-                    existingOperacion.setCantidad(operacion.getCantidad());
-                }
-                if (operacion.getFechaOperacion() != null) {
-                    existingOperacion.setFechaOperacion(operacion.getFechaOperacion());
-                }
-                if (operacion.getModo() != null) {
-                    existingOperacion.setModo(operacion.getModo());
-                }
-                if (operacion.getOperacionExitosa() != null) {
-                    existingOperacion.setOperacionExitosa(operacion.getOperacionExitosa());
-                }
-                if (operacion.getOperacionObservaciones() != null) {
-                    existingOperacion.setOperacionObservaciones(operacion.getOperacionObservaciones());
-                }
-
-                return existingOperacion;
-            })
-            .map(operacionRepository::save);
+        Optional<Operacion> result = operacionService.partialUpdate(operacion);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -173,13 +141,10 @@ public class OperacionResource {
     public List<Operacion> getAllOperacions(@RequestParam(required = false) String filter) {
         if ("orden-is-null".equals(filter)) {
             log.debug("REST request to get all Operacions where orden is null");
-            return StreamSupport
-                .stream(operacionRepository.findAll().spliterator(), false)
-                .filter(operacion -> operacion.getOrden() == null)
-                .collect(Collectors.toList());
+            return operacionService.findAllWhereOrdenIsNull();
         }
         log.debug("REST request to get all Operacions");
-        return operacionRepository.findAll();
+        return operacionService.findAll();
     }
 
     /**
@@ -191,7 +156,7 @@ public class OperacionResource {
     @GetMapping("/operacions/{id}")
     public ResponseEntity<Operacion> getOperacion(@PathVariable Long id) {
         log.debug("REST request to get Operacion : {}", id);
-        Optional<Operacion> operacion = operacionRepository.findById(id);
+        Optional<Operacion> operacion = operacionService.findOne(id);
         return ResponseUtil.wrapOrNotFound(operacion);
     }
 
@@ -204,7 +169,7 @@ public class OperacionResource {
     @DeleteMapping("/operacions/{id}")
     public ResponseEntity<Void> deleteOperacion(@PathVariable Long id) {
         log.debug("REST request to delete Operacion : {}", id);
-        operacionRepository.deleteById(id);
+        operacionService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
