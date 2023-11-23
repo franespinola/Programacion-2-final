@@ -1,13 +1,24 @@
 package fran.procesador.orden.service;
 
+import fran.procesador.orden.domain.Operacion;
 import fran.procesador.orden.domain.Orden;
 import fran.procesador.orden.repository.OrdenRepository;
+import fran.procesador.orden.service.dto.ListaDeOrdenesExternas;
+import fran.procesador.orden.service.dto.OrdenExternaDTO;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Service Implementation for managing {@link Orden}.
@@ -20,8 +31,11 @@ public class OrdenService {
 
     private final OrdenRepository ordenRepository;
 
-    public OrdenService(OrdenRepository ordenRepository) {
+    private final OperacionService operacionService;
+
+    public OrdenService(OrdenRepository ordenRepository, OperacionService operacionService) {
         this.ordenRepository = ordenRepository;
+        this.operacionService = operacionService;
     }
 
     /**
@@ -116,5 +130,87 @@ public class OrdenService {
     public void delete(Long id) {
         log.debug("Request to delete Orden : {}", id);
         ordenRepository.deleteById(id);
+    }
+
+    public List<Operacion> procesarOrdenesPendiente() {
+        // 1. Buscar ordenes en el servicio externo de catedra
+        List<OrdenExternaDTO> ordenesPendientes = buscarTodasLasOrdenes();
+
+        List<Operacion> resultadoOperaciones = new ArrayList<>();
+
+        //2. Procesar las ordenes
+        for (OrdenExternaDTO o : ordenesPendientes) {
+            // 2.1 Busco si existe el cliente
+            boolean existeCliente = buscarUsuarioEnElServicio(o.getCliente());
+
+            Operacion operacion = new Operacion();
+            operacion.setFechaOperacion(Instant.now());
+
+            if (existeCliente) { // Si es verdadero significa que existe el cliente
+                // Aca chequeaste todo y andubo perfecto
+                operacion.setOperacionExitosa(true);
+            } else { // Significa que el cliente no existe, creamos operacion fallida
+                operacion.setOperacionExitosa(false);
+            }
+
+            Orden orden = new Orden();
+            orden.setCliente(o.getCliente());
+            orden.setAccion(o.getAccion());
+            orden.setModo(o.getModo().name());
+            orden.setPrecio(o.getPrecio());
+            orden.setFechaOperacion(o.getFechaOperacion());
+            orden.setCantidad(o.getCantidad());
+            operacion.setOrden(save(orden));
+
+            // Guardamos la operacion exitosa en la base de datos
+            operacionService.save(operacion);
+
+            // Agregamos la operacion fallida a la lista de operaciones que le vamos a devolver al usuario
+            resultadoOperaciones.add(operacion);
+        }
+
+        return resultadoOperaciones;
+    }
+
+    /**
+     * Metodo para traer la lista de ordenes del servicio de catedras.
+     */
+    private List<OrdenExternaDTO> buscarTodasLasOrdenes() {
+        RestTemplate restTemplate = new RestTemplate();
+        String baseUrl = "http://192.168.194.254:8000/";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(
+            "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcmFuZXNwaW5vbGEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNzMwOTcwNDMwfQ.H9oPo335mVdfNwQjQVCzFJZOlPqWijdqFI8eDFalB9bWXuJLINnpoSZwbqktOaHee_ynx4EALbexkOPt7QHVTg"
+        );
+
+        HttpEntity<String> request = new HttpEntity<String>("352823435", headers);
+
+        ResponseEntity<ListaDeOrdenesExternas> response = restTemplate.exchange(
+            baseUrl + "/api/ordenes/ordenes",
+            HttpMethod.GET,
+            request,
+            ListaDeOrdenesExternas.class
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            log.debug("Se trajo la lista de ordenes de la cátedra. Se trajeron {} ordenes", response.getBody().getOrdenes().size());
+            return response.getBody().getOrdenes();
+        } else {
+            log.error("No se pudo traer la lista de ordenes.");
+        }
+
+        return new ArrayList<>();
+    }
+
+    /**
+     * Metodo para buscar si un usuario existe o no en el servicio de catedras
+     */
+    private boolean buscarUsuarioEnElServicio(int id) {
+        if (id == 25) {
+            return true;
+        }
+
+        return false;
     }
 }

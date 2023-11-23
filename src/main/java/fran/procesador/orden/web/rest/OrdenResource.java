@@ -1,5 +1,6 @@
 package fran.procesador.orden.web.rest;
 
+import fran.procesador.orden.domain.Operacion;
 import fran.procesador.orden.domain.Orden;
 import fran.procesador.orden.repository.OrdenRepository;
 import fran.procesador.orden.service.OrdenService;
@@ -164,5 +165,16 @@ public class OrdenResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * Procesar las ordenes pendientes
+     *
+     */
+    @PostMapping("/ordens/procesar-ordenes")
+    public ResponseEntity<List<Operacion>> procesarOrdenes() {
+        List<Operacion> operaciones = ordenService.procesarOrdenesPendiente();
+
+        return ResponseEntity.ok(operaciones);
     }
 }
